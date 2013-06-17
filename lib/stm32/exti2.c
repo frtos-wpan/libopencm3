@@ -127,36 +127,36 @@ void exti_select_source(u32 exti, u32 gpioport)
 
 	switch (gpioport) {
 	case GPIOA:
-		bits = 0xf;
+		bits = 0x0;
 		break;
 	case GPIOB:
-		bits = 0xe;
+		bits = 0x1;
 		break;
 	case GPIOC:
-		bits = 0xd;
+		bits = 0x2;
 		break;
 	case GPIOD:
-		bits = 0xc;
+		bits = 0x3;
 		break;
 	case GPIOE:
-		bits = 0xb;
+		bits = 0x4;
 		break;
 #if defined(STM32L1)
 #else
 	case GPIOF:
-		bits = 0xa;
+		bits = 0x5;
 		break;
 	case GPIOG:
-		bits = 0x9;
+		bits = 0x6;
 		break;
 #endif
 	case GPIOH:
-		bits = 0x8;
+		bits = 0x7;
 		break;
 #if defined(STM32L1)
 #else
 	case GPIOI:
-		bits = 0x7;
+		bits = 0x8;
 		break;
 #endif
 	}
@@ -164,15 +164,15 @@ void exti_select_source(u32 exti, u32 gpioport)
 	/* Ensure that only valid EXTI lines are used. */
 	if (exti < EXTI4) {
 		SYSCFG_EXTICR1 &= ~(0x000F << shift);
-		SYSCFG_EXTICR1 |= (~bits << shift);
+		SYSCFG_EXTICR1 |= bits << shift;
 	} else if (exti < EXTI8) {
 		SYSCFG_EXTICR2 &= ~(0x000F << shift);
-		SYSCFG_EXTICR2 |= (~bits << shift);
+		SYSCFG_EXTICR2 |= bits << shift;
 	} else if (exti < EXTI12) {
 		SYSCFG_EXTICR3 &= ~(0x000F << shift);
-		SYSCFG_EXTICR3 |= (~bits << shift);
+		SYSCFG_EXTICR3 |= bits << shift;
 	} else if (exti < EXTI16) {
 		SYSCFG_EXTICR4 &= ~(0x000F << shift);
-		SYSCFG_EXTICR4 |= (~bits << shift);
+		SYSCFG_EXTICR4 |= bits << shift;
 	}
 }
