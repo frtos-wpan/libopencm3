@@ -2,6 +2,8 @@
 #	include <libopencm3/stm32/f1/nvic.h>
 #elif defined(STM32F2)
 #	include <libopencm3/stm32/f2/nvic.h>
+#elif defined(STM32F3)
+#	include <libopencm3/stm32/f3/nvic.h>
 #elif defined(STM32F4)
 #	include <libopencm3/stm32/f4/nvic.h>
 #elif defined(STM32L1)
@@ -20,8 +22,10 @@
 #	include <libopencm3/lpc13xx/nvic.h>
 #elif defined(LPC17XX)
 #	include <libopencm3/lpc17xx/nvic.h>
-#elif defined(LPC43XX)
-#	include <libopencm3/lpc43xx/nvic.h>
+#elif defined(LPC43XX_M4)
+#	include <libopencm3/lpc43xx/m4/nvic.h>
+#elif defined(LPC43XX_M0)
+#	include <libopencm3/lpc43xx/m0/nvic.h>
 
 #elif defined(SAM3X)
 #	include <libopencm3/sam/3x/nvic.h>

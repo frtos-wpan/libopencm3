@@ -2,6 +2,7 @@
 ## This file is part of the libopencm3 project.
 ##
 ## Copyright (C) 2009 Uwe Hermann <uwe@hermann-uwe.de>
+## Copyright (C) 2013 Alexandru Gagniuc <mr.nuke.me@gmail.com>
 ##
 ## This library is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU Lesser General Public License as published by
@@ -19,8 +20,9 @@
 
 LIBNAME		= libopencm3_stm32f4
 
+FP_FLAGS	?= -mfloat-abi=hard -mfpu=fpv4-sp-d16
 PREFIX	        ?= arm-none-eabi
-# PREFIX	?= arm-elf
+
 CC		= $(PREFIX)-gcc
 AR		= $(PREFIX)-ar
 CFLAGS		= -Os -g \
@@ -28,20 +30,21 @@ CFLAGS		= -Os -g \
 		  -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes \
 		  -Wundef -Wshadow \
 		  -I../../../include -fno-common \
-		  -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 \
+		  -mcpu=cortex-m4 -mthumb $(FP_FLAGS) \
 		  -Wstrict-prototypes \
 		  -ffunction-sections -fdata-sections -MD -DSTM32F4
 # ARFLAGS	= rcsv
 ARFLAGS		= rcs
 
-OBJS		= adc.o can.o gpio.o exti2.o pwr.o rcc.o rtc.o crypto.o
+OBJS		= adc.o can.o gpio.o exti.o pwr.o rcc.o rtc.o crypto.o
 
 OBJS            += crc_common_all.o dac_common_all.o dma_common_f24.o \
-                   gpio_common_all.o gpio_common_f24.o i2c_common_all.o \
+                   gpio_common_all.o gpio_common_f234.o i2c_common_all.o \
                    iwdg_common_all.o pwr_common_all.o rtc_common_bcd.o \
-                   spi_common_all.o timer_common_all.o timer_common_f24.o \
-                   usart_common_all.o flash_common_f24.o hash_common_f24.o \
-                   crypto_common_f24.o
+                   spi_common_all.o spi_common_f124.o timer_common_all.o \
+                   timer_common_f234.o timer_common_f24.o usart_common_all.o \
+		   usart_common_f124.o flash_common_f234.o flash_common_f24.o \
+		   hash_common_f24.o crypto_common_f24.o
 
 OBJS            += usb.o usb_standard.o usb_control.o usb_fx07_common.o \
 		   usb_f107.o usb_f207.o

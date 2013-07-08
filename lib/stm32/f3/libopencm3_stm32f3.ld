@@ -2,8 +2,6 @@
  * This file is part of the libopencm3 project.
  *
  * Copyright (C) 2009 Uwe Hermann <uwe@hermann-uwe.de>
- * Copyright (C) 2012 Michael Ossmann <mike@ossmann.com>
- * Copyright (C) 2012 Benjamin Vernoux <titanmkd@gmail.com>
  *
  * This library is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +17,7 @@
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Generic linker script for LPC43XX targets using libopencm3. */
+/* Generic linker script for STM32 targets using libopencm3. */
 
 /* Memory regions must be defined in the ld script which includes this one. */
 
@@ -33,9 +31,6 @@ ENTRY(reset_handler)
 SECTIONS
 {
 	.text : {
-		. = ALIGN(0x400);
-		_text_ram = (. - ORIGIN(rom)) + ORIGIN(ram); /* Start of Code in RAM */
-
 		*(.vectors)	/* Vector table */
 		*(.text*)	/* Program code */
 		. = ALIGN(4);
@@ -81,15 +76,13 @@ SECTIONS
 
 	. = ALIGN(4);
 	_etext = .;
-	_etext_ram = (. - ORIGIN(rom)) + ORIGIN(ram);
-	_etext_rom = (. - ORIGIN(rom)) + ORIGIN(rom_flash);
 
 	.data : {
 		_data = .;
 		*(.data*)	/* Read-write initialized data */
 		. = ALIGN(4);
 		_edata = .;
-	} >ram_data AT >rom
+	} >ram AT >rom
 	_data_loadaddr = LOADADDR(.data);
 
 	.bss : {
@@ -97,7 +90,7 @@ SECTIONS
 		*(COMMON)
 		. = ALIGN(4);
 		_ebss = .;
-	} >ram_data
+	} >ram
 
 	/*
 	 * The .eh_frame section appears to be used for C++ exception handling.
@@ -107,8 +100,7 @@ SECTIONS
 
 	. = ALIGN(4);
 	end = .;
-
-	/* Leave room above stack for IAP to run. */
-	__StackTop = ORIGIN(ram) + LENGTH(ram) - 32;
-	PROVIDE(_stack = __StackTop);
 }
+
+PROVIDE(_stack = ORIGIN(ram) + LENGTH(ram));
+
